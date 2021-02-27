@@ -42,7 +42,7 @@ custom:
           tableName: ${self:custom.resources.TODO_TABLE}
           serviceRoleArn: { Fn::GetAtt: [AppSyncDynamoDBServiceRole, Arn] }
     mappingTemplates:
-      - dataSource: PrimaryTable
+      - dataSource: TodoTable
         type: Mutation
         field: createTodo
         request: "create_todo/request.vtl"
