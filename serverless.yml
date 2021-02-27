@@ -47,6 +47,26 @@ custom:
         field: createTodo
         request: "create_todo/request.vtl"
         response: "common-item-response.vtl"
+      - dataSource: TodoTable
+        type: Query
+        field: listToDos
+        request: "list_todos/request.vtl"
+        response: "common-items-response.vtl"
+      - dataSource: TodoTable
+        type: Mutation
+        field: deleteTodo
+        request: "delete_todo/request.vtl"
+        response: "common-item-response.vtl"
+      - dataSource: TodoTable
+        type: Query
+        field: getToDo
+        request: "get_todo/request.vtl"
+        response: "common-item-response.vtl"
+      - dataSource: TodoTable
+        type: Mutation
+        field: updateTodo
+        request: "update_todo/request.vtl"
+        response: "common-item-response.vtl"
 functions:
   hello:
     handler: handler.hello
