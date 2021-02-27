@@ -113,3 +113,5 @@ dist
 
 # aws output file
 aws-exports.json
+
+.idea/

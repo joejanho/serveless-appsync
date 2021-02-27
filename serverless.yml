@@ -13,6 +13,14 @@ provider:
   stage: ${opt:stage, env:stage, 'dev'}
   lambdaHashingVersion: 20201221
 
+plugins:
+  - serverless-appsync-plugin
+
+custom:
+  appSync: # appsync plugin configuration
+    name: ${self:service}-appsync-exercise-${self:provider.stage}
+    authenticationType: API_KEY # since we dont have user login for now
+
 functions:
   hello:
     handler: handler.hello
