@@ -11,16 +11,42 @@ provider:
   name: aws
   runtime: nodejs12.x
   stage: ${opt:stage, env:stage, 'dev'}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeTable
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource:
+        - "arn:aws:dynamodb:${self:provider.region}:*:*"
   lambdaHashingVersion: 20201221
 
 plugins:
   - serverless-appsync-plugin
 
 custom:
+  resources:
+    TODO_TABLE: ${self:service}-todo-table-${self:provider.stage}
+
   appSync: # appsync plugin configuration
     name: ${self:service}-appsync-exercise-${self:provider.stage}
     authenticationType: API_KEY # since we dont have user login for now
+    dataSources:
+      - type: AMAZON_DYNAMODB
+        name: TODOTABLE
+        description: "Todo Table"
+        config:
+          tableName: ${self:custom.resources.TODO_TABLE}
+          serviceRoleArn: { Fn::GetAtt: [ AppSyncDynamoDBServiceRole, Arn ]
 
 functions:
   hello:
     handler: handler.hello
+
+resources:
+  - ${file(./resources/appsync-dynamo-role.yml)}
+  - ${file(./resources/dynamo-table.yml)}
