@@ -41,6 +41,12 @@ custom:
         config:
           tableName: ${self:custom.resources.TODO_TABLE}
           serviceRoleArn: { Fn::GetAtt: [AppSyncDynamoDBServiceRole, Arn] }
+    mappingTemplates:
+      - dataSource: PrimaryTable
+        type: Mutation
+        field: createTodo
+        request: "create_todo/request.vtl"
+        response: "common-item-response.vtl"
 functions:
   hello:
     handler: handler.hello
