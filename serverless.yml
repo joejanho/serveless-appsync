@@ -31,22 +31,20 @@ plugins:
 custom:
   resources:
     TODO_TABLE: ${self:service}-todo-table-${self:provider.stage}
-
   appSync: # appsync plugin configuration
-    name: ${self:service}-appsync-exercise-${self:provider.stage}
-    authenticationType: API_KEY # since we dont have user login for now
+    name: ${self:service}-appsync-${self:provider.stage}
+    authenticationType: API_KEY # since we don't have user login for now
     dataSources:
       - type: AMAZON_DYNAMODB
-        name: TODOTABLE
+        name: TodoTable
         description: "Todo Table"
         config:
           tableName: ${self:custom.resources.TODO_TABLE}
-          serviceRoleArn: { Fn::GetAtt: [ AppSyncDynamoDBServiceRole, Arn ]
-
+          serviceRoleArn: { Fn::GetAtt: [AppSyncDynamoDBServiceRole, Arn] }
 functions:
   hello:
     handler: handler.hello
 
 resources:
-  - ${file(./resources/appsync-dynamo-role.yml)}
-  - ${file(./resources/dynamo-table.yml)}
+  - ${file(resources/appsync-dynamodb-role.yml)}
+  - ${file(resources/dynamo-tables.yml)}
